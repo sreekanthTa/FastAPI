@@ -1,0 +1,28 @@
+version: "3.0"
+
+services:
+  user_app:
+    build: .
+    container_name: user_app
+    ports:
+      - "8000:8000"           # port mapping as string
+    volumes:
+      - ./app:/app/app        # maps local app to container's /app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - user_db
+
+  user_db:
+    image: postgres:15-alpine
+    container_name: user_db
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password 
+      POSTGRES_DB: postgres_db
+    ports:
+     - "5432:5432"
+    volumes:
+     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: {}  
