@@ -7,8 +7,8 @@ from app.controllers import user_controller
 router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("/", response_model=UserResponse)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    return user_controller.create_user_controller(db, user)
+async def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    return await user_controller.create_user_controller(db, user)
 
 @router.get("/", response_model=list[UserResponse])
 def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
